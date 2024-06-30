@@ -25,16 +25,17 @@ foreach (DIRS as $type => $dir) {
 	$mavenJava = "maven" . ucfirst($type);
 
 	$files = array(
-		$dir . 'libs/' . ARTIFACT_ID . '-' . VERSION . '.jar',
-		$dir . 'libs/' . ARTIFACT_ID . '-' . VERSION . '-sources.jar',
-
+		$dir . 'libs/' . ARTIFACT_ID . '-' . VERSION . '-' . $type . '.jar',
+		$dir . 'libs/' . ARTIFACT_ID . '-' . VERSION . '-' . $type . '-sources.jar',
 		$dir . 'publications/' . $mavenJava . '/' . ARTIFACT_ID . '.pom',
 	);
 	
 	$pom = '../' . $dir . 'publications/' . $mavenJava . '/' . ARTIFACT_ID . '.pom';
-	
+
+
+
 	$pom_str = file_get_contents($pom);
-	
+	$pom_str = preg_replace('/' . preg_quote(VERSION . '-' . $type . '</version>', '/'). '/', VERSION . '</version>', $pom_str, 1);
 	file_put_contents($pom, $pom_str);
 	
 	foreach ($files as $index => $file) {
