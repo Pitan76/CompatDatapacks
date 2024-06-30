@@ -24,7 +24,7 @@ The mod enables backward compatibility for your Minecraft data packs.
 [[dependencies.compatdatapacks76]]
    modId="minecraft"
    mandatory=true
-   versionRange="[1.19,)"
+   versionRange="[1.21,)"
    ordering="NONE"
    side="BOTH"
 
