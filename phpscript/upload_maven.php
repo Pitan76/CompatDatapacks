@@ -21,12 +21,13 @@ foreach (DIRS as $type => $dir) {
 	$postData['group_id'] = GROUP_ID;
 	$postData['artifact_id'] = ARTIFACT_ID;
 	$postData['version'] = VERSION;
-	
+
+	$mavenJava = "maven" . ucfirst($type);
+
 	$files = array(
 		$dir . 'libs/' . ARTIFACT_ID . '-' . VERSION . '.jar',
 		$dir . 'libs/' . ARTIFACT_ID . '-' . VERSION . '-sources.jar',
 
-		$mavenJava = "maven" . ucfirst($type);
 		$dir . 'publications/' . $mavenJava . '/' . ARTIFACT_ID . '.pom',
 	);
 	
