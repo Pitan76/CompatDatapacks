@@ -9,9 +9,10 @@ define('GROUP_ID', 'net.pitan76');
 define('ARTIFACT_ID', 'compatdatapacks76');
 
 define('DIRS', array(
-	'fabric' => 'build/',
-	//'forge' => 'build/',
-	'neoforge' => 'build/',
+    'common' => 'common/build/',
+	'fabric' => 'fabric/build/',
+	//'forge' => 'forge/build/',
+	'neoforge' => 'neoforge/build/',
 ));
 
 foreach (DIRS as $type => $dir) {
