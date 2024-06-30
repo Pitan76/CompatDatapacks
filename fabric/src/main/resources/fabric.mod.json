@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "compatdatapacks",
+  "id": "compatdatapacks76",
   "version": "${version}",
 
   "name": "CompatDatapacks",
@@ -9,7 +9,7 @@
     "PitaQ"
   ],
   "contact": {
-    "homepage": "https://curseforge.com/minecraft/mc-mods/compatdatapacks",
+    "homepage": "https://curseforge.com/minecraft/mc-mods/compatdatapacks76",
     "sources": "https://github.com/Pitan76/CompatDatapacks",
     "issues": "https://github.com/Pitan76/CompatDatapacks/issues"
   },
@@ -24,8 +24,7 @@
     ]
   },
   "mixins": [
-    "compatdatapacks.mixins.json",
-    "compatdatapacks-common.mixins.json"
+    "compatdatapacks76-common.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.15.11",

@@ -3,8 +3,7 @@ plugins {
 }
 loom {
     forge {
-        mixinConfig "compatdatapacks-common.mixins.json"
-        mixinConfig "compatdatapacks.mixins.json"
+        mixinConfig "compatdatapacks76-common.mixins.json"
     }
 }
 architectury {

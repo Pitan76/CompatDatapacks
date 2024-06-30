@@ -4,24 +4,24 @@ license="MIT"
 issueTrackerURL="https://github.com/PTOM76/CompatDatapacks/issues"
 
 [[mods]]
-modId="compatdatapacks"
+modId="compatdatapacks76"
 version="${version}"
 displayName="CompatDatapacks"
-displayURL="https://curseforge.com/minecraft/mc-mods/compat-datapacks"
+displayURL="https://curseforge.com/minecraft/mc-mods/compat-datapacks76"
 logoFile="icon.png"
 authors="PitaQ"
 description='''
 The mod enables backward compatibility for your Minecraft data packs.
 '''
 
-[[dependencies.compatdatapacks]]
+[[dependencies.compatdatapacks76]]
 modId="forge"
 mandatory=true
 versionRange="[50,)"
 ordering="NONE"
 side="BOTH"
 
-[[dependencies.compatdatapacks]]
+[[dependencies.compatdatapacks76]]
 modId="minecraft"
 mandatory=true
 versionRange="[1.21,1.22)"

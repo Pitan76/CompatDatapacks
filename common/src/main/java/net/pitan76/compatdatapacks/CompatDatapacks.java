@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 
 public class CompatDatapacks
 {
-	public static final String MOD_ID = "compatdatapacks";
+	public static final String MOD_ID = "compatdatapacks76";
 	public static final String MOD_NAME = "Compat Datapacks";
 
 	public static void init() {
