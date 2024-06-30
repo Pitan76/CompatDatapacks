@@ -25,7 +25,9 @@ foreach (DIRS as $type => $dir) {
 	$files = array(
 		$dir . 'libs/' . ARTIFACT_ID . '-' . VERSION . '.jar',
 		$dir . 'libs/' . ARTIFACT_ID . '-' . VERSION . '-sources.jar',
-		$dir . 'publications/mavenJava/' . ARTIFACT_ID . '.pom',
+
+		$mavenJava = "maven" . ucfirst($type);
+		$dir . 'publications/' . $mavenJava . '/' . ARTIFACT_ID . '.pom',
 	);
 	
 	$pom = '../' . $dir . 'publications/mavenJava/' . ARTIFACT_ID . '.pom';
