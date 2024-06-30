@@ -27,7 +27,7 @@
     "compatdatapacks76-common.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.15.11",
+    "fabricloader": "*",
     "minecraft": ">=1.21"
   }
 }
