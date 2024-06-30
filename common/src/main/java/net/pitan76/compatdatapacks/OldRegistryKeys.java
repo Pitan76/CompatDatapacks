@@ -36,10 +36,13 @@ public class OldRegistryKeys {
         add("predicate", "predicates");
         add("item_modifier", "item_modifiers");
         add("function", "functions");
+
+        /*
         add("tags/item", "tags/items");
         add("tags/block", "tags/blocks");
         add("tags/entity_type", "tags/entity_types");
         add("tags/fluid", "tags/fluids");
         add("tags/game_event", "tags/game_events");
+        */
     }
 }
