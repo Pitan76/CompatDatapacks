@@ -15,7 +15,7 @@ public class RecipeManagerMixin {
     // result.item -> result.id
     @ModifyVariable(method = "apply(Ljava/util/Map;Lnet/minecraft/resource/ResourceManager;Lnet/minecraft/util/profiler/Profiler;)V",
             at = @At("STORE"), ordinal = 0)
-    private Map.Entry<Identifier, JsonElement> compatdatapacks76$apply(Map.Entry<Identifier, JsonElement> entry) {
+    private Map.Entry<Identifier, JsonElement> compatdatapacks76$modifyEntry(Map.Entry<Identifier, JsonElement> entry) {
         var json = entry.getValue();
         if (json.isJsonObject()) {
             var obj = json.getAsJsonObject();
