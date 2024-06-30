@@ -2,14 +2,11 @@ plugins {
     id "com.github.johnrengelman.shadow" version "7.1.2"
 }
 loom {
-    forge {
-        mixinConfig "compatdatapacks-common.mixins.json"
-        mixinConfig "compatdatapacks.mixins.json"
-    }
+    accessWidenerPath = project(":common").loom.accessWidenerPath
 }
 architectury {
     platformSetupLoomIde()
-    forge()
+    neoForge()
 }
 
 configurations {
@@ -17,14 +14,14 @@ configurations {
     shadowCommon // Don't use shadow from the shadow plugin since it *excludes* files.
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
-    developmentForge.extendsFrom common
+    developmentNeoForge.extendsFrom common
 }
 
 dependencies {
-    forge "net.minecraftforge:forge:${rootProject.forge_version}"
+    neoForge "net.neoforged:neoforge:${rootProject.neoforge_version}"
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
-    shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
+    shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive = false }
 }
 
 processResources {
@@ -34,7 +31,7 @@ processResources {
         expand "version": project.version
     }
 
-    project.version = project.version + "-forge"
+    project.version = project.version + "-neoforge"
 }
 
 shadowJar {
@@ -68,7 +65,7 @@ components.java {
 
 publishing {
     publications {
-        mavenForge(MavenPublication) {
+        mavenNeoForge(MavenPublication) {
             artifactId = rootProject.archives_base_name + "-" + project.name
             from components.java
         }
