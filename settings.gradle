@@ -9,9 +9,10 @@ pluginManagement {
 }
 
 include("common")
-if (enabled_platforms.contains("fabric"))
+var platforms = enabled_platforms.split(",")
+if (platforms.contains("fabric"))
     include("fabric")
-if (enabled_platforms.contains("forge"))
+if (platforms.contains("forge"))
     include("forge")
-if (enabled_platforms.contains("neoforge"))
+if (platforms.contains("neoforge"))
     include("neoforge")
