@@ -1,6 +1,6 @@
 cd "..\"
 
-set modid=itemalchemy
+set modid=compatdatapacks76
 
 git fetch origin
 timeout /T 1
