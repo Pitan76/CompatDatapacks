@@ -5,8 +5,14 @@
 
   "name": "CompatDatapacks",
   "description": "The mod enables backward compatibility for your Minecraft data packs.",
-  "authors": [],
-  "contact": {},
+  "authors": [
+    "PitaQ"
+  ],
+  "contact": {
+    "homepage": "https://curseforge.com/minecraft/mc-mods/compatdatapacks",
+    "sources": "https://github.com/Pitan76/CompatDatapacks",
+    "issues": "https://github.com/Pitan76/CompatDatapacks/issues"
+  },
 
   "license": "MIT",
   "icon": "icon.png",
