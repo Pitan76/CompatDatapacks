@@ -30,7 +30,7 @@ foreach (DIRS as $type => $dir) {
 		$dir . 'publications/' . $mavenJava . '/' . ARTIFACT_ID . '.pom',
 	);
 	
-	$pom = '../' . $dir . 'publications/mavenJava/' . ARTIFACT_ID . '.pom';
+	$pom = '../' . $dir . 'publications/' . $mavenJava . '/' . ARTIFACT_ID . '.pom';
 	
 	$pom_str = file_get_contents($pom);
 	
