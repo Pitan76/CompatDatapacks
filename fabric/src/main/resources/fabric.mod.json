@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "compatdatapacks",
+  "version": "${version}",
+
+  "name": "CompatDatapacks",
+  "description": "The mod enables backward compatibility for your Minecraft data packs.",
+  "authors": [],
+  "contact": {},
+
+  "license": "MIT",
+  "icon": "icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.pitan76.compatdatapacks.fabric.CompatDatapacksFabric"
+    ]
+  },
+  "mixins": [
+    "compatdatapacks.mixins.json",
+    "compatdatapacks-common.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.15.11",
+    "minecraft": ">=1.21"
+  }
+}
