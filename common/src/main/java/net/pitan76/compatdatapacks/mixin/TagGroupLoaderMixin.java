@@ -12,6 +12,7 @@ import net.pitan76.compatdatapacks.RewriteLogs;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
@@ -41,7 +42,7 @@ public class TagGroupLoaderMixin {
             ResourceFinder resourceFinder = ResourceFinder.json(oldTag);
             for (Map.Entry<Identifier, List<Resource>> entry : resourceFinder.findAllResources(resourceManager).entrySet()) {
 
-                if (fixMineable(entry, entries)) continue;
+                if (compactdatapacks76$fixMineable(entry, entries)) continue;
 
                 // add entry
                 entries.add(entry);
@@ -54,7 +55,8 @@ public class TagGroupLoaderMixin {
         return entries.iterator();
     }
 
-    private static boolean fixMineable(Map.Entry<Identifier, List<Resource>> oldEntry, List<Map.Entry<Identifier, List<Resource>>> entries) {
+    @Unique
+    private static boolean compactdatapacks76$fixMineable(Map.Entry<Identifier, List<Resource>> oldEntry, List<Map.Entry<Identifier, List<Resource>>> entries) {
         var oldKey = oldEntry.getKey().toString();
         if (!OldMineablePaths.contains(oldKey)) return false;
 
