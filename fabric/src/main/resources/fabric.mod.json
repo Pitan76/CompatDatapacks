@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "CompatDatapacks",
-  "description": "The mod enables backward compatibility for your Minecraft data packs.",
+  "description": "The mod enables backward compatibility for datapacks.",
   "authors": [
     "PitaQ"
   ],
