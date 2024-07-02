@@ -17,14 +17,14 @@ The mod enables backward compatibility for datapacks.
 [[dependencies.compatdatapacks76]]
    modId="neoforge"
    type = "required"
-   versionRange="[21.0.40-beta,)"
+   versionRange="[20,)"
    ordering="NONE"
    side="BOTH"
 
 [[dependencies.compatdatapacks76]]
    modId="minecraft"
    type = "required"
-   versionRange="[1.21,)"
+   versionRange="[1.20,)"
    ordering="NONE"
    side="BOTH"
 
