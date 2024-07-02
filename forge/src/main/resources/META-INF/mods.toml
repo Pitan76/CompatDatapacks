@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[50,)"
+loaderVersion="[49,)"
 license="MIT"
 issueTrackerURL="https://github.com/PTOM76/CompatDatapacks/issues"
 
@@ -17,7 +17,7 @@ The mod enables backward compatibility for datapacks.
 [[dependencies.compatdatapacks76]]
 modId="forge"
 mandatory=true
-versionRange="[50,)"
+versionRange="[49,)"
 ordering="NONE"
 side="BOTH"
 
