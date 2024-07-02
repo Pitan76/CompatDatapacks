@@ -29,10 +29,6 @@ public class OldTags {
     }
 
     static {
-        add("tags/item", "tags/items");
-        add("tags/block", "tags/blocks");
-        add("tags/entity_type", "tags/entity_types");
-        add("tags/fluid", "tags/fluids");
-        add("tags/game_event", "tags/game_events");
+        //
     }
 }

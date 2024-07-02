@@ -29,12 +29,6 @@ public class OldRegistryKeys {
     }
 
     static {
-        add("structure", "structures");
-        add("advancement", "advancements");
-        add("recipe", "recipes");
-        add("loot_table", "loot_tables");
-        add("predicate", "predicates");
-        add("item_modifier", "item_modifiers");
-        add("function", "functions");
+        //
     }
 }
