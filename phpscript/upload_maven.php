@@ -16,6 +16,8 @@ define('DIRS', array(
 ));
 
 foreach (DIRS as $type => $dir) {
+    $prefix = ($type == "common" ? '' : '-' . $type);
+
 	$postData = array();
 	
 	$postData['group_id'] = GROUP_ID;
@@ -24,7 +26,6 @@ foreach (DIRS as $type => $dir) {
 
 	$mavenJava = "maven" . ucfirst($type);
 
-    $prefix = ($type == "common" ? '' : '-' . $type);
 
 	$files = array(
 		$dir . 'libs/' . ARTIFACT_ID . '-' . VERSION . $prefix . '.jar',
@@ -48,6 +49,8 @@ foreach (DIRS as $type => $dir) {
 		);
 		echo "Uploading '" . $file . "'\n";
 	}
+
+	$postData['artifact_id'] .= $prefix;
 	
 	$request = curl_init('http://localhost/maven/maven.php');
 	curl_setopt($request, CURLOPT_POST, true);
