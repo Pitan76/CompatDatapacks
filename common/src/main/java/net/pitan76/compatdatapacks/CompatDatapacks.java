@@ -10,9 +10,9 @@ public class CompatDatapacks
 	public static final String MOD_NAME = "Compat Datapacks";
 
 	public static void init() {
-		OldRegistryKeys.init();
-		OldTags.init();
-		OldMineablePaths.init();
+		//OldRegistryKeys.init();
+		//OldTags.init();
+		//OldMineablePaths.init();
 	}
 
 	public static Logger LOGGER = LogManager.getLogger();
