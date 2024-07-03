@@ -12,7 +12,6 @@ public class CompatDatapacks
 	public static void init() {
 		OldRegistryKeys.init();
 		OldTags.init();
-		OldMineablePaths.init();
 	}
 
 	public static Logger LOGGER = LogManager.getLogger();
