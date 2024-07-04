@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Map;
@@ -42,5 +43,12 @@ public class JsonDataLoaderMixin {
         compatdatapacks76$loading = false;
 
         CompatDatapacks.log("Loaded old registry keys " + String.join(", ", oldKeys) + " for " + dataType);
+    }
+
+    @ModifyVariable(method = "load", at = @At("STORE"), ordinal = 1)
+    private static JsonElement compatdatapacks76$modifyJsonElement2(JsonElement jsonElement2) {
+        if (compatdatapacks76$loading)
+            return null;
+        return jsonElement2;
     }
 }
