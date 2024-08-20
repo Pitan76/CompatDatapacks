@@ -8,6 +8,7 @@ import net.minecraft.util.Identifier;
 import net.pitan76.compatdatapacks.CompatDatapacks;
 import net.pitan76.compatdatapacks.OldRegistryKeys;
 import net.pitan76.compatdatapacks.RewriteLogs;
+import net.pitan76.compatdatapacks.config.IgnoreConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -46,6 +47,8 @@ public class JsonDataLoaderMixin {
         compatdatapacks76$loading = false;
 
         for (var oldResult : oldResults.entrySet()) {
+            if (IgnoreConfig.contains(oldResult.getKey().toString())) continue;
+            
             if (!results.containsKey(oldResult.getKey())) {
                 results.put(oldResult.getKey(), oldResult.getValue());
             }

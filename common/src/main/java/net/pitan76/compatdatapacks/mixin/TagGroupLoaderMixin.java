@@ -8,6 +8,7 @@ import net.minecraft.util.Identifier;
 import net.pitan76.compatdatapacks.CompatDatapacks;
 import net.pitan76.compatdatapacks.OldTags;
 import net.pitan76.compatdatapacks.RewriteLogs;
+import net.pitan76.compatdatapacks.config.IgnoreConfig;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -37,13 +38,16 @@ public class TagGroupLoaderMixin {
             entries.add(entry);
         }
 
-        Map<Identifier, List<Resource>> map = entries.stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> b));
+        Map<Identifier, List<Resource>> map = entries.stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> a));
 
         for (var oldTag : oldTags) {
             ResourceFinder resourceFinder = ResourceFinder.json(oldTag);
             for (var entry : resourceFinder.findAllResources(resourceManager).entrySet()) {
-                if (!map.containsKey(entry.getKey())) {
-                    map.put(entry.getKey(), entry.getValue());
+                var replaced = OldTags.replace(entry.getKey());
+                if (!map.containsKey(replaced)) {
+                    if (IgnoreConfig.contains(replaced.toString())) continue;
+
+                    entries.add(entry);
                 }
             }
 

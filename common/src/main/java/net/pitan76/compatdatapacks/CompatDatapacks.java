@@ -1,15 +1,17 @@
 package net.pitan76.compatdatapacks;
 
+import net.pitan76.compatdatapacks.config.IgnoreConfig;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class CompatDatapacks
-{
+public class CompatDatapacks {
 	public static final String MOD_ID = "compatdatapacks76";
 	public static final String MOD_NAME = "Compat Datapacks";
 
 	public static void init() {
+		IgnoreConfig.init();
+
 		OldRegistryKeys.init();
 		OldTags.init();
 	}
