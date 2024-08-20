@@ -41,7 +41,11 @@ public class TagGroupLoaderMixin {
 
         for (var oldTag : oldTags) {
             ResourceFinder resourceFinder = ResourceFinder.json(oldTag);
-            map.putAll(resourceFinder.findAllResources(resourceManager));
+            for (var entry : resourceFinder.findAllResources(resourceManager).entrySet()) {
+                if (!map.containsKey(entry.getKey())) {
+                    map.put(entry.getKey(), entry.getValue());
+                }
+            }
 
             ++RewriteLogs.loadingOldTags;
         }
