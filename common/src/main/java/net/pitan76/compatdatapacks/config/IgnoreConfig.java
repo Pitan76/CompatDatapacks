@@ -7,12 +7,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static net.pitan76.compatdatapacks.PlatformUtil.getConfigDir;
+import static net.pitan76.compatdatapacks.CompatDatapacks.configDir;
 
 public class IgnoreConfig {
     private static final List<String> ignores = new ArrayList<>();
 
-    public static File configDir = new File(getConfigDir().toFile(), "compatdatapacks76");
     public static File file = new File(configDir, "ignore.txt");
 
     static {

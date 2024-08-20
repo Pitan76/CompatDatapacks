@@ -8,6 +8,7 @@ import net.minecraft.util.Identifier;
 import net.pitan76.compatdatapacks.CompatDatapacks;
 import net.pitan76.compatdatapacks.OldTags;
 import net.pitan76.compatdatapacks.RewriteLogs;
+import net.pitan76.compatdatapacks.config.Config;
 import net.pitan76.compatdatapacks.config.IgnoreConfig;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,6 +28,8 @@ public class TagGroupLoaderMixin {
 
     @ModifyVariable(method = "loadTags", at = @At("STORE"), ordinal = 0)
     private Iterator compatdatapacks76$modifyVar4(Iterator var4, ResourceManager resourceManager) {
+        if (!Config.isUseCompatTagGroup()) return var4;
+
         if (!OldTags.contains(dataType)) return var4;
 
         var oldTags = OldTags.get(dataType);

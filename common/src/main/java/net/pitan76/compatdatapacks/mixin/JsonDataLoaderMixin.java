@@ -8,6 +8,7 @@ import net.minecraft.util.Identifier;
 import net.pitan76.compatdatapacks.CompatDatapacks;
 import net.pitan76.compatdatapacks.OldRegistryKeys;
 import net.pitan76.compatdatapacks.RewriteLogs;
+import net.pitan76.compatdatapacks.config.Config;
 import net.pitan76.compatdatapacks.config.IgnoreConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -29,6 +30,8 @@ public class JsonDataLoaderMixin {
 
     @Inject(method = "load", at = @At("TAIL"))
     private static void compatdatapacks76$load(ResourceManager resourceManager, String dataType, Gson gson, Map<Identifier, JsonElement> results, CallbackInfo ci) {
+        if (!Config.isUseCompatDataType()) return;
+
         // 二重呼び出しを防ぐ
         if (compatdatapacks76$loading) return;
 
@@ -48,7 +51,7 @@ public class JsonDataLoaderMixin {
 
         for (var oldResult : oldResults.entrySet()) {
             if (IgnoreConfig.contains(oldResult.getKey().toString())) continue;
-            
+
             if (!results.containsKey(oldResult.getKey())) {
                 results.put(oldResult.getKey(), oldResult.getValue());
             }
