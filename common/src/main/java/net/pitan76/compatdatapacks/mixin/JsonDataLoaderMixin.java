@@ -43,11 +43,6 @@ public class JsonDataLoaderMixin {
         compatdatapacks76$loading = false;
 
         CompatDatapacks.log("Loaded old registry keys " + String.join(", ", oldKeys) + " for " + dataType);
-
-        compatdatapacks76$loading = true;
-        load(resourceManager, dataType, gson, results);
-        compatdatapacks76$loading = false;
-
     }
 
     @ModifyVariable(method = "load", at = @At("STORE"), ordinal = 1)
