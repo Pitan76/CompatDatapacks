@@ -15,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static net.minecraft.resource.JsonDataLoader.load;
@@ -25,7 +26,7 @@ public class JsonDataLoaderMixin {
     @Unique
     private static boolean compatdatapacks76$loading = false;
 
-    @Inject(method = "load", at = @At("HEAD"))
+    @Inject(method = "load", at = @At("TAIL"))
     private static void compatdatapacks76$load(ResourceManager resourceManager, String dataType, Gson gson, Map<Identifier, JsonElement> results, CallbackInfo ci) {
         // 二重呼び出しを防ぐ
         if (compatdatapacks76$loading) return;
@@ -35,12 +36,20 @@ public class JsonDataLoaderMixin {
         var oldKeys = OldRegistryKeys.get(dataType);
         if (oldKeys == null || oldKeys.isEmpty()) return;
 
+        Map<Identifier, JsonElement> oldResults = new HashMap<>();
+
         compatdatapacks76$loading = true;
         for (var oldKey : oldKeys) {
-            load(resourceManager, oldKey, gson, results);
+            load(resourceManager, oldKey, gson, oldResults);
             ++RewriteLogs.loadingOldKeys;
         }
         compatdatapacks76$loading = false;
+
+        for (var oldResult : oldResults.entrySet()) {
+            if (!results.containsKey(oldResult.getKey())) {
+                results.put(oldResult.getKey(), oldResult.getValue());
+            }
+        }
 
         CompatDatapacks.log("Loaded old registry keys " + String.join(", ", oldKeys) + " for " + dataType);
     }
