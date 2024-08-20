@@ -25,7 +25,7 @@ public class JsonDataLoaderMixin {
     @Unique
     private static boolean compatdatapacks76$loading = false;
 
-    @Inject(method = "load", at = @At("TAIL"))
+    @Inject(method = "load", at = @At("HEAD"))
     private static void compatdatapacks76$load(ResourceManager resourceManager, String dataType, Gson gson, Map<Identifier, JsonElement> results, CallbackInfo ci) {
         // 二重呼び出しを防ぐ
         if (compatdatapacks76$loading) return;
@@ -43,6 +43,11 @@ public class JsonDataLoaderMixin {
         compatdatapacks76$loading = false;
 
         CompatDatapacks.log("Loaded old registry keys " + String.join(", ", oldKeys) + " for " + dataType);
+
+        compatdatapacks76$loading = true;
+        load(resourceManager, dataType, gson, results);
+        compatdatapacks76$loading = false;
+
     }
 
     @ModifyVariable(method = "load", at = @At("STORE"), ordinal = 1)
