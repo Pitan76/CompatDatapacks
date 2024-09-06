@@ -11,7 +11,7 @@ define('ARTIFACT_ID', 'compatdatapacks76');
 define('DIRS', array(
     'common' => 'common/build/',
 	'fabric' => 'fabric/build/',
-	//'forge' => 'forge/build/',
+	'forge' => 'forge/build/',
 	'neoforge' => 'neoforge/build/',
 ));
 
