@@ -46,6 +46,7 @@ subprojects {
                         addGameVersion "NeoForge"
                     }
                     addGameVersion '1.21'
+                    addGameVersion '1.21.1'
 
                     mainArtifact(tasks.remapJar)
                 }
@@ -61,7 +62,7 @@ subprojects {
                 token = System.getenv("MODRINTH_TOKEN")
                 projectId = 'WcHRLVFE'
                 versionNumber = project.mod_version + "-" + modLoader
-                gameVersions = ['1.21']
+                gameVersions = ['1.21', '1.21.1']
                 versionType = 'release'
                 uploadFile = tasks.remapJar
                 changelog = ''
