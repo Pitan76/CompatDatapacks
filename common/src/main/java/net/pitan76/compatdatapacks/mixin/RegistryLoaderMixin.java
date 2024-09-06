@@ -21,7 +21,7 @@ public abstract class RegistryLoaderMixin {
     @Inject(method="parseAndAdd", at = @At(value = "INVOKE_ASSIGN",
             target = "Lcom/google/gson/JsonParser;parseReader(Ljava/io/Reader;)Lcom/google/gson/JsonElement;", remap = false),
             locals = LocalCapture.CAPTURE_FAILHARD)
-    private static <E> void compatdatapacks76$parseAndAdd(MutableRegistry<E> registry, Decoder<E> decoder, RegistryOps<com.google.gson.JsonElement> ops, RegistryKey<E> key, Resource resource, RegistryEntryInfo entryInfo, CallbackInfo cir, @Local JsonElement jsonElement) throws IOException {
+    private static <E> void compatdatapacks76$parseAndAdd(MutableRegistry<E> registry, Decoder<E> decoder, RegistryOps<JsonElement> ops, RegistryKey<E> key, Resource resource, RegistryEntryInfo entryInfo, CallbackInfo cir, @Local JsonElement jsonElement) throws IOException {
         String id = registry.getKey().getValue().toString();
         if (Config.isUseCompatDimensionType() && id.equals("minecraft:dimension_type"))
             JsonFixer.fixDimensionType(jsonElement);
