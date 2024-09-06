@@ -98,6 +98,7 @@ public class Config {
     }
 
     public static boolean getBoolean(String key) {
+        if (!map.containsKey(key)) return true;
         return (boolean) map.get(key);
     }
 
