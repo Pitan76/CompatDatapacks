@@ -51,10 +51,9 @@ public class JsonDataLoaderMixin {
 
         for (var oldResult : oldResults.entrySet()) {
             if (IgnoreConfig.contains(oldResult.getKey().toString())) continue;
+            if (results.containsKey(oldResult.getKey())) continue;
 
-            if (!results.containsKey(oldResult.getKey())) {
-                results.put(oldResult.getKey(), oldResult.getValue());
-            }
+            results.put(oldResult.getKey(), oldResult.getValue());
         }
 
         CompatDatapacks.log("Loaded old registry keys " + String.join(", ", oldKeys) + " for " + dataType);

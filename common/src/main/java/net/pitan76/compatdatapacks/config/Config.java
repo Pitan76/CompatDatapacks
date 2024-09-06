@@ -22,6 +22,7 @@ public class Config {
             map.put("enabled", true);
             map.put("useCompatRecipe", true);
             map.put("useCompatDataType", true);
+            map.put("useCompatDimensionType", true);
             map.put("useCompatTagGroup", true);
 
             save();
@@ -41,6 +42,11 @@ public class Config {
     public static boolean isUseCompatDataType() {
         if (!isEnabled()) return false;
         return getBoolean("useCompatDataType");
+    }
+
+    public static boolean isUseCompatDimensionType() {
+        if (!isEnabled()) return false;
+        return getBoolean("useCompatDimensionType");
     }
 
     public static boolean isUseCompatTagGroup() {

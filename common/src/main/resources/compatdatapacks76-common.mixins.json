@@ -6,6 +6,7 @@
   "mixins": [
     "JsonDataLoaderMixin",
     "RecipeManagerMixin",
+    "RegistryLoaderMixin",
     "TagGroupLoaderMixin"
   ],
   "client": [
