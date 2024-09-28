@@ -56,6 +56,23 @@ public class JsonFixer {
             }
         }
 
+        if (obj.has("results") && obj.get("results").isJsonArray()) {
+            var results = obj.getAsJsonArray("results");
+            for (var result : results) {
+                if (!result.isJsonObject()) continue;
+                var resultObj = result.getAsJsonObject();
+                if (resultObj.has("item") && resultObj.get("item").isJsonPrimitive()) {
+                    isFixed = true;
+                    var item = resultObj.getAsJsonPrimitive("item");
+                    if (item.isString()) {
+                        var itemId = item.getAsString();
+                        resultObj.addProperty("id", itemId);
+                        resultObj.remove("item");
+                    }
+                }
+            }
+        }
+
         if (!isFixed) return;
         ++RewriteLogs.fixingRecipe;
     }
