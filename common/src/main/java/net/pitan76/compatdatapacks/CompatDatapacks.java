@@ -1,12 +1,13 @@
 package net.pitan76.compatdatapacks;
 
 import net.pitan76.compatdatapacks.config.Config;
-import net.pitan76.compatdatapacks.config.IgnoreConfig;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
+
+import static net.pitan76.compatdatapacks.PlatformUtil.getConfigDir;
 
 public class CompatDatapacks
 {
@@ -17,10 +18,6 @@ public class CompatDatapacks
 
 	public static void init() {
 		Config.init();
-		IgnoreConfig.init();
-
-		OldRegistryKeys.init();
-		OldTags.init();
 	}
 
 	public static Logger LOGGER = LogManager.getLogger();

@@ -16,12 +16,15 @@ public class RecipeManagerMixin {
     @ModifyVariable(method = "apply(Ljava/util/Map;Lnet/minecraft/resource/ResourceManager;Lnet/minecraft/util/profiler/Profiler;)V",
             at = @At("STORE"), ordinal = 0)
     private Map.Entry<Identifier, JsonElement> compatdatapacks76$modifyEntry(Map.Entry<Identifier, JsonElement> entry) {
+        boolean isFixed = false;
+
         var json = entry.getValue();
         if (json.isJsonObject()) {
             var obj = json.getAsJsonObject();
             if (obj.has("result") && obj.get("result").isJsonObject()) {
                 var result = obj.getAsJsonObject("result");
                 if (result.has("item") && result.get("item").isJsonPrimitive()) {
+                    isFixed = true;
                     var item = result.getAsJsonPrimitive("item");
                     if (item.isString()) {
                         var itemId = item.getAsString();
@@ -30,9 +33,27 @@ public class RecipeManagerMixin {
                     }
                 }
             }
+
+            if (obj.has("results") && obj.get("results").isJsonArray()) {
+                var results = obj.getAsJsonArray("results");
+                for (var result : results) {
+                    if (!result.isJsonObject()) continue;
+                    var resultObj = result.getAsJsonObject();
+                    if (resultObj.has("item") && resultObj.get("item").isJsonPrimitive()) {
+                        isFixed = true;
+                        var item = resultObj.getAsJsonPrimitive("item");
+                        if (item.isString()) {
+                            var itemId = item.getAsString();
+                            resultObj.addProperty("id", itemId);
+                            resultObj.remove("item");
+                        }
+                    }
+                }
+            }
         }
 
-        ++RewriteLogs.fixingRecipe;
+        if (isFixed)
+            ++RewriteLogs.fixingRecipe;
 
         return entry;
     }
