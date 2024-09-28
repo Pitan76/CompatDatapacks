@@ -21,8 +21,6 @@ public class Config {
             // Default values
             map.put("enabled", true);
             map.put("useCompatRecipe", true);
-            map.put("useCompatDataType", true);
-            map.put("useCompatTagGroup", true);
 
             save();
         }
@@ -37,17 +35,6 @@ public class Config {
         if (!isEnabled()) return false;
         return getBoolean("useCompatRecipe");
     }
-
-    public static boolean isUseCompatDataType() {
-        if (!isEnabled()) return false;
-        return getBoolean("useCompatDataType");
-    }
-
-    public static boolean isUseCompatTagGroup() {
-        if (!isEnabled()) return false;
-        return getBoolean("useCompatTagGroup");
-    }
-
 
     public static void load() {
         // Load compatdatapacks76.json
