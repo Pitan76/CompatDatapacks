@@ -36,7 +36,7 @@ public class TagGroupLoaderMixin {
         if (oldTags == null || oldTags.isEmpty()) return var4;
 
         List<Map.Entry<Identifier, List<Resource>>> entries = new ArrayList<>();
-        while(var4.hasNext()) {
+        while (var4.hasNext()) {
             Map.Entry<Identifier, List<Resource>> entry = (Map.Entry)var4.next();
             entries.add(entry);
         }
@@ -47,11 +47,9 @@ public class TagGroupLoaderMixin {
             ResourceFinder resourceFinder = ResourceFinder.json(oldTag);
             for (var entry : resourceFinder.findAllResources(resourceManager).entrySet()) {
                 var replaced = OldTags.replace(entry.getKey());
-                if (!map.containsKey(replaced)) {
-                    if (IgnoreConfig.contains(replaced.toString())) continue;
+                if (IgnoreConfig.contains(replaced.toString())) continue;
 
-                    entries.add(entry);
-                }
+                entries.add(Map.entry(replaced, entry.getValue()));
             }
 
             ++RewriteLogs.loadingOldTags;

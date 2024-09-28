@@ -26,6 +26,8 @@ public class IgnoreConfig {
         if (ignores.isEmpty()) return false;
         if (ignores.contains(key)) return true;
         for (var ignore : ignores) {
+            if (ignore.isEmpty()) continue;
+
             var namespace = "minecraft";
             var path = "";
 
