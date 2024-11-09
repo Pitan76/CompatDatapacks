@@ -5,7 +5,6 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "JsonDataLoaderMixin",
-    "RecipeManagerMixin",
     "RegistryLoaderMixin",
     "TagGroupLoaderMixin"
   ],

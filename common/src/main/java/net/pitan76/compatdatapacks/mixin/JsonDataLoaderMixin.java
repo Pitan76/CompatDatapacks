@@ -1,11 +1,14 @@
 package net.pitan76.compatdatapacks.mixin;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.llamalad7.mixinextras.sugar.Local;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DynamicOps;
 import net.minecraft.resource.JsonDataLoader;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import net.pitan76.compatdatapacks.CompatDatapacks;
+import net.pitan76.compatdatapacks.JsonFixer;
 import net.pitan76.compatdatapacks.OldRegistryKeys;
 import net.pitan76.compatdatapacks.RewriteLogs;
 import net.pitan76.compatdatapacks.config.Config;
@@ -14,9 +17,11 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +34,8 @@ public class JsonDataLoaderMixin {
     private static boolean compatdatapacks76$loading = false;
 
     @Inject(method = "load", at = @At("TAIL"))
-    private static void compatdatapacks76$load(ResourceManager resourceManager, String dataType, Gson gson, Map<Identifier, JsonElement> results, CallbackInfo ci) {
+    private static <T> void compatdatapacks76$load(ResourceManager resourceManager, String dataType, DynamicOps<JsonElement> gson, Codec<T> codec, Map<Identifier, T> results, CallbackInfo ci) {
+
         if (!Config.isUseCompatDataType()) return;
 
         // 二重呼び出しを防ぐ
@@ -40,11 +46,11 @@ public class JsonDataLoaderMixin {
         var oldKeys = OldRegistryKeys.get(dataType);
         if (oldKeys == null || oldKeys.isEmpty()) return;
 
-        Map<Identifier, JsonElement> oldResults = new HashMap<>();
+        Map<Identifier, T> oldResults = new HashMap<>();
 
         compatdatapacks76$loading = true;
         for (var oldKey : oldKeys) {
-            load(resourceManager, oldKey, gson, oldResults);
+            load(resourceManager, oldKey, gson, codec, oldResults);
             ++RewriteLogs.loadingOldKeys;
         }
         compatdatapacks76$loading = false;
@@ -59,10 +65,19 @@ public class JsonDataLoaderMixin {
         CompatDatapacks.log("Loaded old registry keys " + String.join(", ", oldKeys) + " for " + dataType);
     }
 
-    @ModifyVariable(method = "load", at = @At("STORE"), ordinal = 1)
-    private static JsonElement compatdatapacks76$modifyJsonElement2(JsonElement jsonElement2) {
+    @ModifyArg(method = "load", at = @At(value = "INVOKE",
+            target = "Lcom/mojang/serialization/Codec;parse(Lcom/mojang/serialization/DynamicOps;Ljava/lang/Object;)Lcom/mojang/serialization/DataResult;"),
+    index = 1)
+    private static <T> T compatdatapacks76$modifyParseReader(T obj) throws IOException {
+        if (!(obj instanceof JsonElement)) return obj;
+        JsonElement jsonElement = (JsonElement) obj;
+
         if (compatdatapacks76$loading)
             return null;
-        return jsonElement2;
+
+        if (Config.isUseCompatRecipe()) {
+            JsonFixer.fixRecipe(jsonElement);
+        }
+        return obj;
     }
 }

@@ -43,6 +43,8 @@ public class JsonFixer {
         if (!json.isJsonObject()) return;
         var obj = json.getAsJsonObject();
 
+        if (!obj.has("type")) return;
+
         if (obj.has("result") && obj.get("result").isJsonObject()) {
             var result = obj.getAsJsonObject("result");
             if (result.has("item") && result.get("item").isJsonPrimitive()) {
