@@ -2,6 +2,9 @@ package net.pitan76.compatdatapacks;
 
 import com.google.gson.JsonElement;
 
+import java.util.Map;
+import java.util.Set;
+
 public class JsonFixer {
 
     public static void fixDimensionType(JsonElement json) {
@@ -43,8 +46,6 @@ public class JsonFixer {
         if (!json.isJsonObject()) return;
         var obj = json.getAsJsonObject();
 
-        if (!obj.has("type")) return;
-
         if (obj.has("result") && obj.get("result").isJsonObject()) {
             var result = obj.getAsJsonObject("result");
             if (result.has("item") && result.get("item").isJsonPrimitive()) {
@@ -54,6 +55,28 @@ public class JsonFixer {
                     var itemId = item.getAsString();
                     result.addProperty("id", itemId);
                     result.remove("item");
+                }
+            }
+        }
+
+        if (obj.has("key")) {
+            var key = obj.getAsJsonObject("key");
+            var keySet = key.entrySet();
+            Map.Entry<String, JsonElement>[] keyArray = keySet.toArray(Map.Entry[]::new);
+
+            int size = keySet.size();
+
+            for (int i = 0; i < size; ++i) {
+                var entry = keyArray[i];
+                if (!entry.getValue().isJsonObject()) continue;
+                var value = entry.getValue().getAsJsonObject();
+                if (value.has("item") && value.get("item").isJsonPrimitive()) {
+                    isFixed = true;
+                    var item = value.getAsJsonPrimitive("item");
+                    if (item.isString()) {
+                        key.remove(entry.getKey());
+                        key.add(entry.getKey(), item);
+                    }
                 }
             }
         }

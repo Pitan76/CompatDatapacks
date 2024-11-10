@@ -1,9 +1,9 @@
 package net.pitan76.compatdatapacks.mixin;
 
 import com.google.gson.JsonElement;
-import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DynamicOps;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.resource.JsonDataLoader;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
@@ -18,7 +18,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.io.IOException;
@@ -65,19 +64,27 @@ public class JsonDataLoaderMixin {
         CompatDatapacks.log("Loaded old registry keys " + String.join(", ", oldKeys) + " for " + dataType);
     }
 
+    @Unique
+    private static boolean isCompatdatapacks76$isRecipe = false;
+
+    @Inject(method = "load", at = @At("HEAD"))
+    private static <T> void compatdatapacks76$load_head(ResourceManager resourceManager, String dataType, DynamicOps<JsonElement> gson, Codec<T> codec, Map<Identifier, T> results, CallbackInfo ci) {
+        if (Config.isUseCompatRecipe()) {
+            isCompatdatapacks76$isRecipe = dataType.equals("recipes") || dataType.equals("recipe");
+        }
+    }
+
     @ModifyArg(method = "load", at = @At(value = "INVOKE",
-            target = "Lcom/mojang/serialization/Codec;parse(Lcom/mojang/serialization/DynamicOps;Ljava/lang/Object;)Lcom/mojang/serialization/DataResult;"),
-    index = 1)
+            target = "Lcom/mojang/serialization/Codec;parse(Lcom/mojang/serialization/DynamicOps;Ljava/lang/Object;)Lcom/mojang/serialization/DataResult;", remap = false),
+            index = 1)
     private static <T> T compatdatapacks76$modifyParseReader(T obj) throws IOException {
         if (!(obj instanceof JsonElement)) return obj;
         JsonElement jsonElement = (JsonElement) obj;
 
-        if (compatdatapacks76$loading)
-            return null;
-
-        if (Config.isUseCompatRecipe()) {
+        if (Config.isUseCompatRecipe() && isCompatdatapacks76$isRecipe) {
             JsonFixer.fixRecipe(jsonElement);
         }
+
         return obj;
     }
 }
