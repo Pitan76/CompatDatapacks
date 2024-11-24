@@ -63,6 +63,24 @@ public class JsonFixer {
             }
         }
 
+        // results.[*].item -> results.[*].id
+        if (obj.has("results") && obj.get("results").isJsonArray()) {
+            var results = obj.getAsJsonArray("results");
+            for (var result : results) {
+                if (!result.isJsonObject()) continue;
+                var resultObj = result.getAsJsonObject();
+                if (resultObj.has("item") && resultObj.get("item").isJsonPrimitive()) {
+                    isFixed = true;
+                    var item = resultObj.getAsJsonPrimitive("item");
+                    if (item.isString()) {
+                        var itemId = item.getAsString();
+                        resultObj.addProperty("id", itemId);
+                        resultObj.remove("item");
+                    }
+                }
+            }
+        }
+
         // key.*.item -> key.*
         if (obj.has("key")) {
             var key = obj.getAsJsonObject("key");
@@ -85,10 +103,12 @@ public class JsonFixer {
             }
         }
 
-        // ingredients.*.item -> ingredients.*
+        // ingredients.[*].item -> ingredients.[*]
         if (obj.has("ingredients") && obj.get("ingredients").isJsonArray()) {
             var ingredients = obj.getAsJsonArray("ingredients");
-            for (var ingredient : ingredients) {
+            JsonElement[] ingredientsArr = ingredients.asList().toArray(new JsonElement[0]);
+
+            for (JsonElement ingredient : ingredientsArr) {
                 if (!ingredient.isJsonObject()) continue;
                 var ingredientObj = ingredient.getAsJsonObject();
                 if (ingredientObj.has("item") && ingredientObj.get("item").isJsonPrimitive()) {
@@ -97,24 +117,6 @@ public class JsonFixer {
                     if (item.isString()) {
                         ingredients.remove(ingredient);
                         ingredients.add(item);
-                    }
-                }
-            }
-        }
-
-        // results.*.item -> results.*.id
-        if (obj.has("results") && obj.get("results").isJsonArray()) {
-            var results = obj.getAsJsonArray("results");
-            for (var result : results) {
-                if (!result.isJsonObject()) continue;
-                var resultObj = result.getAsJsonObject();
-                if (resultObj.has("item") && resultObj.get("item").isJsonPrimitive()) {
-                    isFixed = true;
-                    var item = resultObj.getAsJsonPrimitive("item");
-                    if (item.isString()) {
-                        var itemId = item.getAsString();
-                        resultObj.addProperty("id", itemId);
-                        resultObj.remove("item");
                     }
                 }
             }
