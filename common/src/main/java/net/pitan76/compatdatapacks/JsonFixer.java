@@ -3,7 +3,6 @@ package net.pitan76.compatdatapacks;
 import com.google.gson.JsonElement;
 
 import java.util.Map;
-import java.util.Set;
 
 public class JsonFixer {
 
@@ -19,6 +18,8 @@ public class JsonFixer {
                 isFixed = true;
 
                 var value = monster_spawn_light_level.getAsJsonObject("value");
+
+                // monster_spawn_light_level.value.max_inclusive -> monster_spawn_light_level.max_inclusive
                 if (value.has("max_inclusive") && value.get("max_inclusive").isJsonPrimitive()) {
                     var max_inclusive = value.getAsJsonPrimitive("max_inclusive");
                     if (max_inclusive.isNumber()) {
@@ -26,6 +27,8 @@ public class JsonFixer {
                         value.remove("max_inclusive");
                     }
                 }
+
+                // monster_spawn_light_level.value.min_inclusive -> monster_spawn_light_level.min_inclusive
                 if (value.has("min_inclusive") && value.get("min_inclusive").isJsonPrimitive()) {
                     var min_inclusive = value.getAsJsonPrimitive("min_inclusive");
                     if (min_inclusive.isNumber()) {
@@ -46,6 +49,7 @@ public class JsonFixer {
         if (!json.isJsonObject()) return;
         var obj = json.getAsJsonObject();
 
+        // result.item -> result.id
         if (obj.has("result") && obj.get("result").isJsonObject()) {
             var result = obj.getAsJsonObject("result");
             if (result.has("item") && result.get("item").isJsonPrimitive()) {
@@ -59,13 +63,13 @@ public class JsonFixer {
             }
         }
 
+        // key.*.item -> key.*
         if (obj.has("key")) {
             var key = obj.getAsJsonObject("key");
             var keySet = key.entrySet();
             Map.Entry<String, JsonElement>[] keyArray = keySet.toArray(Map.Entry[]::new);
 
             int size = keySet.size();
-
             for (int i = 0; i < size; ++i) {
                 var entry = keyArray[i];
                 if (!entry.getValue().isJsonObject()) continue;
@@ -81,6 +85,24 @@ public class JsonFixer {
             }
         }
 
+        // ingredients.*.item -> ingredients.*
+        if (obj.has("ingredients") && obj.get("ingredients").isJsonArray()) {
+            var ingredients = obj.getAsJsonArray("ingredients");
+            for (var ingredient : ingredients) {
+                if (!ingredient.isJsonObject()) continue;
+                var ingredientObj = ingredient.getAsJsonObject();
+                if (ingredientObj.has("item") && ingredientObj.get("item").isJsonPrimitive()) {
+                    isFixed = true;
+                    var item = ingredientObj.getAsJsonPrimitive("item");
+                    if (item.isString()) {
+                        ingredients.remove(ingredient);
+                        ingredients.add(item);
+                    }
+                }
+            }
+        }
+
+        // results.*.item -> results.*.id
         if (obj.has("results") && obj.get("results").isJsonArray()) {
             var results = obj.getAsJsonArray("results");
             for (var result : results) {

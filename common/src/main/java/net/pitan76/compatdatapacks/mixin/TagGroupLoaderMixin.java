@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Mixin(TagGroupLoader.class)
 public class TagGroupLoaderMixin {
@@ -40,8 +39,6 @@ public class TagGroupLoaderMixin {
             Map.Entry<Identifier, List<Resource>> entry = (Map.Entry)var4.next();
             entries.add(entry);
         }
-
-        Map<Identifier, List<Resource>> map = entries.stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> a));
 
         for (var oldTag : oldTags) {
             ResourceFinder resourceFinder = ResourceFinder.json(oldTag);
