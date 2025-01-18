@@ -112,6 +112,8 @@ public class JsonFixer {
                         if (!tagStr.startsWith("#"))
                             tagStr = "#" + tagStr;
 
+                        tagStr = CommonTagConvert.convert(tagStr);
+
                         key.add(entry.getKey(), new JsonPrimitive(tagStr));
                     }
                 }
@@ -144,6 +146,8 @@ public class JsonFixer {
                         String tagStr = tag.getAsString();
                         if (!tagStr.startsWith("#"))
                             tagStr = "#" + tagStr;
+
+                        tagStr = CommonTagConvert.convert(tagStr);
 
                         ingredients.add(new JsonPrimitive(tagStr));
                     }
