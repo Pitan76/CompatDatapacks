@@ -1,6 +1,7 @@
 package net.pitan76.compatdatapacks;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
 
 import java.util.Map;
 
@@ -100,6 +101,20 @@ public class JsonFixer {
                         key.add(entry.getKey(), item);
                     }
                 }
+
+                if (value.has("tag") && value.get("tag").isJsonPrimitive()) {
+                    isFixed = true;
+                    var tag = value.getAsJsonPrimitive("tag");
+                    if (tag.isString()) {
+                        key.remove(entry.getKey());
+
+                        String tagStr = tag.getAsString();
+                        if (!tagStr.startsWith("#"))
+                            tagStr = "#" + tagStr;
+
+                        key.add(entry.getKey(), new JsonPrimitive(tagStr));
+                    }
+                }
             }
         }
 
@@ -117,6 +132,20 @@ public class JsonFixer {
                     if (item.isString()) {
                         ingredients.remove(ingredient);
                         ingredients.add(item);
+                    }
+                }
+
+                if (ingredientObj.has("tag") && ingredientObj.get("tag").isJsonPrimitive()) {
+                    isFixed = true;
+                    var tag = ingredientObj.getAsJsonPrimitive("tag");
+                    if (tag.isString()) {
+                        ingredients.remove(ingredient);
+
+                        String tagStr = tag.getAsString();
+                        if (!tagStr.startsWith("#"))
+                            tagStr = "#" + tagStr;
+
+                        ingredients.add(new JsonPrimitive(tagStr));
                     }
                 }
             }
