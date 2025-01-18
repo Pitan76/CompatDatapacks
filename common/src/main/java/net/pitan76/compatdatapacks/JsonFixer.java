@@ -1,6 +1,9 @@
 package net.pitan76.compatdatapacks;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
+
+import java.util.Map;
 
 public class JsonFixer {
 
@@ -68,6 +71,57 @@ public class JsonFixer {
                         var itemId = item.getAsString();
                         resultObj.addProperty("id", itemId);
                         resultObj.remove("item");
+                    }
+                }
+            }
+        }
+
+        // old tag -> new tag
+        if (obj.has("key")) {
+            var key = obj.getAsJsonObject("key");
+            var keySet = key.entrySet();
+            Map.Entry<String, JsonElement>[] keyArray = keySet.toArray(Map.Entry[]::new);
+
+            int size = keySet.size();
+            for (int i = 0; i < size; ++i) {
+                var entry = keyArray[i];
+                if (!entry.getValue().isJsonObject()) continue;
+                var value = entry.getValue().getAsJsonObject();
+
+                if (value.has("tag") && value.get("tag").isJsonPrimitive()) {
+                    isFixed = true;
+                    var tag = value.getAsJsonPrimitive("tag");
+                    if (tag.isString()) {
+                        String tagStr = CommonTagConvert.convert(tag.getAsString());
+
+                        if (!tagStr.equals(tag.getAsString())) {
+                            value.remove("tag");
+                            value.add("tag", new JsonPrimitive(tagStr));
+                        }
+                    }
+                }
+            }
+        }
+
+        // old tag -> new tag (ingredients)
+        if (obj.has("ingredients") && obj.get("ingredients").isJsonArray()) {
+            var ingredients = obj.getAsJsonArray("ingredients");
+            JsonElement[] ingredientsArr = ingredients.asList().toArray(new JsonElement[0]);
+
+            for (JsonElement ingredient : ingredientsArr) {
+                if (!ingredient.isJsonObject()) continue;
+                var ingredientObj = ingredient.getAsJsonObject();
+
+                if (ingredientObj.has("tag") && ingredientObj.get("tag").isJsonPrimitive()) {
+                    isFixed = true;
+                    var tag = ingredientObj.getAsJsonPrimitive("tag");
+                    if (tag.isString()) {
+                        String tagStr = CommonTagConvert.convert(tag.getAsString());
+
+                        if (!tagStr.equals(tag.getAsString())) {
+                            ingredientObj.remove("tag");
+                            ingredientObj.add("tag", new JsonPrimitive(tagStr));
+                        }
                     }
                 }
             }
