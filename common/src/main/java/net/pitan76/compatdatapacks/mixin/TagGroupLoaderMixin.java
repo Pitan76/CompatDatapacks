@@ -41,8 +41,6 @@ public class TagGroupLoaderMixin {
             entries.add(entry);
         }
 
-        Map<Identifier, List<Resource>> map = entries.stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> a));
-
         for (var oldTag : oldTags) {
             ResourceFinder resourceFinder = ResourceFinder.json(oldTag);
             for (var entry : resourceFinder.findAllResources(resourceManager).entrySet()) {
