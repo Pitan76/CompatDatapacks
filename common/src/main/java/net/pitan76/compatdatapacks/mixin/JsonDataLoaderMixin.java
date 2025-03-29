@@ -3,8 +3,9 @@ package net.pitan76.compatdatapacks.mixin;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DynamicOps;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.resource.JsonDataLoader;
+import net.minecraft.resource.Resource;
+import net.minecraft.resource.ResourceFinder;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import net.pitan76.compatdatapacks.CompatDatapacks;
@@ -22,23 +23,33 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import static net.minecraft.resource.JsonDataLoader.load;
 
 @Mixin(JsonDataLoader.class)
-public class JsonDataLoaderMixin {
+public abstract class JsonDataLoaderMixin {
 
     @Unique
     private static boolean compatdatapacks76$loading = false;
 
-    @Inject(method = "load", at = @At("TAIL"))
-    private static <T> void compatdatapacks76$load(ResourceManager resourceManager, String dataType, DynamicOps<JsonElement> gson, Codec<T> codec, Map<Identifier, T> results, CallbackInfo ci) {
+    @Inject(method = "load(Lnet/minecraft/resource/ResourceManager;Lnet/minecraft/resource/ResourceFinder;Lcom/mojang/serialization/DynamicOps;Lcom/mojang/serialization/Codec;Ljava/util/Map;)V", at = @At("TAIL"))
+    private static <T> void compatdatapacks76$load(ResourceManager manager, ResourceFinder finder, DynamicOps<JsonElement> ops, Codec<T> codec, Map<Identifier, T> results, CallbackInfo ci) {
 
         if (!Config.isUseCompatDataType()) return;
 
         // 二重呼び出しを防ぐ
         if (compatdatapacks76$loading) return;
+
+        var dataType = "";
+        Iterator<Map.Entry<Identifier, Resource>> var5 = finder.findResources(manager).entrySet().iterator();
+        // 1つだけ取得してprint
+        if (var5.hasNext()) {
+            Map.Entry<Identifier, Resource> entry = var5.next();
+            Identifier key = entry.getKey();
+            dataType = key.getPath().split("/")[0];
+        }
 
         if (!OldRegistryKeys.contains(dataType)) return;
 
@@ -49,7 +60,7 @@ public class JsonDataLoaderMixin {
 
         compatdatapacks76$loading = true;
         for (var oldKey : oldKeys) {
-            load(resourceManager, oldKey, gson, codec, oldResults);
+            load(manager, ResourceFinder.json(oldKey), ops, codec, oldResults);
             ++RewriteLogs.loadingOldKeys;
         }
         compatdatapacks76$loading = false;
@@ -67,14 +78,22 @@ public class JsonDataLoaderMixin {
     @Unique
     private static boolean isCompatdatapacks76$isRecipe = false;
 
-    @Inject(method = "load", at = @At("HEAD"))
-    private static <T> void compatdatapacks76$load_head(ResourceManager resourceManager, String dataType, DynamicOps<JsonElement> gson, Codec<T> codec, Map<Identifier, T> results, CallbackInfo ci) {
+    @Inject(method = "load(Lnet/minecraft/resource/ResourceManager;Lnet/minecraft/resource/ResourceFinder;Lcom/mojang/serialization/DynamicOps;Lcom/mojang/serialization/Codec;Ljava/util/Map;)V", at = @At("HEAD"))
+    private static <T> void compatdatapacks76$load_head(ResourceManager manager, ResourceFinder finder, DynamicOps<JsonElement> ops, Codec<T> codec, Map<Identifier, T> results, CallbackInfo ci) {
         if (Config.isUseCompatRecipe()) {
+            var dataType = "";
+            Iterator<Map.Entry<Identifier, Resource>> var5 = finder.findResources(manager).entrySet().iterator();
+            // 1つだけ取得してprint
+            if (var5.hasNext()) {
+                Map.Entry<Identifier, Resource> entry = var5.next();
+                Identifier key = entry.getKey();
+                dataType = key.getPath().split("/")[0];
+            }
             isCompatdatapacks76$isRecipe = dataType.equals("recipes") || dataType.equals("recipe");
         }
     }
 
-    @ModifyArg(method = "load", at = @At(value = "INVOKE",
+    @ModifyArg(method = "load(Lnet/minecraft/resource/ResourceManager;Lnet/minecraft/resource/ResourceFinder;Lcom/mojang/serialization/DynamicOps;Lcom/mojang/serialization/Codec;Ljava/util/Map;)V", at = @At(value = "INVOKE",
             target = "Lcom/mojang/serialization/Codec;parse(Lcom/mojang/serialization/DynamicOps;Ljava/lang/Object;)Lcom/mojang/serialization/DataResult;", remap = false),
             index = 1)
     private static <T> T compatdatapacks76$modifyParseReader(T obj) throws IOException {
