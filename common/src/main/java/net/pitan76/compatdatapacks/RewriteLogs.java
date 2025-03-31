@@ -5,4 +5,5 @@ public class RewriteLogs {
     public static long fixingRecipe = 0;
     public static long loadingOldTags = 0;
     public static long fixingDimensionType = 0;
+    public static long fixingLootTable = 0;
 }

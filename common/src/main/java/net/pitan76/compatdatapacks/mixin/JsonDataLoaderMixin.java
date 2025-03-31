@@ -3,7 +3,6 @@ package net.pitan76.compatdatapacks.mixin;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DynamicOps;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.resource.JsonDataLoader;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
@@ -65,12 +64,19 @@ public class JsonDataLoaderMixin {
     }
 
     @Unique
-    private static boolean isCompatdatapacks76$isRecipe = false;
+    private static boolean compatdatapacks76$isRecipe = false;
+
+    @Unique
+    private static boolean compatdatapacks76$isLootTable = false;
 
     @Inject(method = "load", at = @At("HEAD"))
     private static <T> void compatdatapacks76$load_head(ResourceManager resourceManager, String dataType, DynamicOps<JsonElement> gson, Codec<T> codec, Map<Identifier, T> results, CallbackInfo ci) {
         if (Config.isUseCompatRecipe()) {
-            isCompatdatapacks76$isRecipe = dataType.equals("recipes") || dataType.equals("recipe");
+            compatdatapacks76$isRecipe = dataType.equals("recipes") || dataType.equals("recipe");
+        }
+
+        if (Config.isUseCompatLootTable()) {
+            compatdatapacks76$isLootTable = dataType.equals("loot_tables") || dataType.equals("loot_table");
         }
     }
 
@@ -81,8 +87,11 @@ public class JsonDataLoaderMixin {
         if (!(obj instanceof JsonElement)) return obj;
         JsonElement jsonElement = (JsonElement) obj;
 
-        if (Config.isUseCompatRecipe() && isCompatdatapacks76$isRecipe) {
+        if (Config.isUseCompatRecipe() && compatdatapacks76$isRecipe) {
             JsonFixer.fixRecipe(jsonElement);
+        }
+        if (Config.isUseCompatLootTable() && compatdatapacks76$isLootTable) {
+            JsonFixer.fixLootTable(jsonElement);
         }
 
         return obj;
