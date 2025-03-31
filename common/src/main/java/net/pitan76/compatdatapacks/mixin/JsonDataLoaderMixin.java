@@ -76,10 +76,10 @@ public abstract class JsonDataLoaderMixin {
     }
 
     @Unique
-    private static boolean isCompatdatapacks76$isRecipe = false;
+    private static boolean compatdatapacks76$isRecipe = false;
 
     @Unique
-    private static boolean isCompatdatapacks76$isLootTable = false;
+    private static boolean compatdatapacks76$isLootTable = false;
 
     @Inject(method = "load(Lnet/minecraft/resource/ResourceManager;Lnet/minecraft/resource/ResourceFinder;Lcom/mojang/serialization/DynamicOps;Lcom/mojang/serialization/Codec;Ljava/util/Map;)V", at = @At("HEAD"))
     private static <T> void compatdatapacks76$load_head(ResourceManager manager, ResourceFinder finder, DynamicOps<JsonElement> ops, Codec<T> codec, Map<Identifier, T> results, CallbackInfo ci) {
@@ -94,10 +94,10 @@ public abstract class JsonDataLoaderMixin {
             }
 
             if (Config.isUseCompatRecipe())
-                isCompatdatapacks76$isRecipe = dataType.equals("recipes") || dataType.equals("recipe");
+                compatdatapacks76$isRecipe = dataType.equals("recipes") || dataType.equals("recipe");
 
             if (Config.isUseCompatLootTable())
-                isCompatdatapacks76$isLootTable = dataType.equals("loot_tables") || dataType.equals("loot_table");
+                compatdatapacks76$isLootTable = dataType.equals("loot_tables") || dataType.equals("loot_table");
         }
     }
 
@@ -108,10 +108,10 @@ public abstract class JsonDataLoaderMixin {
         if (!(obj instanceof JsonElement)) return obj;
         JsonElement jsonElement = (JsonElement) obj;
 
-        if (Config.isUseCompatRecipe() && isCompatdatapacks76$isRecipe) {
+        if (Config.isUseCompatRecipe() && compatdatapacks76$isRecipe) {
             JsonFixer.fixRecipe(jsonElement);
         }
-        if (Config.isUseCompatLootTable() && isCompatdatapacks76$isLootTable) {
+        if (Config.isUseCompatLootTable() && compatdatapacks76$isLootTable) {
             JsonFixer.fixLootTable(jsonElement);
         }
 
