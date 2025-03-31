@@ -1,6 +1,7 @@
 package net.pitan76.compatdatapacks.config;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.File;
 import java.io.FileReader;
@@ -14,7 +15,7 @@ public class Config {
 
     private static Map<String, Object> map = new HashMap<>();
 
-    private static final Gson gson = new Gson();
+    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public static void init() {
         if (!file.exists()) {
