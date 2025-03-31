@@ -1,6 +1,7 @@
 package net.pitan76.compatdatapacks.config;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.File;
 import java.io.FileReader;
@@ -14,13 +15,14 @@ public class Config {
 
     private static Map<String, Object> map = new HashMap<>();
 
-    private static final Gson gson = new Gson();
+    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public static void init() {
         if (!file.exists()) {
             // Default values
             map.put("enabled", true);
             map.put("useCompatRecipe", true);
+            map.put("useCompatLootTable", true);
             map.put("useCompatDataType", true);
             map.put("useCompatDimensionType", true);
             map.put("useCompatTagGroup", true);
@@ -37,6 +39,11 @@ public class Config {
     public static boolean isUseCompatRecipe() {
         if (!isEnabled()) return false;
         return getBoolean("useCompatRecipe");
+    }
+
+    public static boolean isUseCompatLootTable() {
+        if (!isEnabled()) return false;
+        return getBoolean("useCompatLootTable");
     }
 
     public static boolean isUseCompatDataType() {
