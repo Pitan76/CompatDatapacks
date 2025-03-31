@@ -21,7 +21,6 @@ public class Config {
         if (!file.exists()) {
             // Default values
             map.put("enabled", true);
-            map.put("useCompatRecipe", true);
             map.put("useCompatLootTable", true);
 
             save();
@@ -31,11 +30,6 @@ public class Config {
 
     public static boolean isEnabled() {
         return getBoolean("enabled");
-    }
-
-    public static boolean isUseCompatRecipe() {
-        if (!isEnabled()) return false;
-        return getBoolean("useCompatRecipe");
     }
 
     public static boolean isUseCompatLootTable() {

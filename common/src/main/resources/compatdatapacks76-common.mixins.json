@@ -4,8 +4,7 @@
   "package": "net.pitan76.compatdatapacks.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "JsonDataLoaderMixin",
-    "RecipeManagerMixin"
+    "JsonDataLoaderMixin"
   ],
   "client": [
   ],
