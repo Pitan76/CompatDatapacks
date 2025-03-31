@@ -18,6 +18,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -78,7 +79,7 @@ public class JsonDataLoaderMixin {
     }
 
     @ModifyVariable(method = "load", at = @At("STORE"), ordinal = 0)
-    private static JsonElement compatdatapacks76$modifyParseReader(JsonElement jsonElement) {
+    private static JsonElement compatdatapacks76$modifyParseReader(JsonElement jsonElement) throws IOException {
         if (Config.isUseCompatLootTable() && compatdatapacks76$isLootTable) {
             JsonFixer.fixLootTable(jsonElement);
         }
