@@ -21,6 +21,7 @@ public class Config {
             // Default values
             map.put("enabled", true);
             map.put("useCompatRecipe", true);
+            map.put("useCompatLootTable", true);
             map.put("useCompatDataType", true);
             map.put("useCompatDimensionType", true);
             map.put("useCompatTagGroup", true);
@@ -37,6 +38,11 @@ public class Config {
     public static boolean isUseCompatRecipe() {
         if (!isEnabled()) return false;
         return getBoolean("useCompatRecipe");
+    }
+
+    public static boolean isUseCompatLootTable() {
+        if (!isEnabled()) return false;
+        return getBoolean("useCompatLootTable");
     }
 
     public static boolean isUseCompatDataType() {
