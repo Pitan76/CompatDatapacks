@@ -19,8 +19,8 @@ import java.io.IOException;
 @Mixin(RegistryLoader.class)
 public abstract class RegistryLoaderMixin {
     @Inject(method="parseAndAdd", at = @At(value = "INVOKE_ASSIGN",
-            target = "Lnet/minecraft/util/StrictJsonParser;parse(Ljava/io/Reader;)Lcom/google/gson/JsonElement;", remap = false),
-            locals = LocalCapture.CAPTURE_FAILHARD)
+            target = "Lnet/minecraft/util/StrictJsonParser;parse(Ljava/io/Reader;)Lcom/google/gson/JsonElement;"),
+            locals = LocalCapture.CAPTURE_FAILSOFT)
     private static <E> void compatdatapacks76$parseAndAdd(MutableRegistry<E> registry, Decoder<E> decoder, RegistryOps<JsonElement> ops, RegistryKey<E> key, Resource resource, RegistryEntryInfo entryInfo, CallbackInfo cir, @Local JsonElement jsonElement) throws IOException {
         String id = registry.getKey().getValue().getPath();
         if (Config.isUseCompatDimensionType() && id.equals("dimension_type"))
