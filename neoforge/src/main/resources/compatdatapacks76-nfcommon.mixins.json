@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.pitan76.compatdatapacks.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "RegistryLoaderMixin",
+    "TagGroupLoaderMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

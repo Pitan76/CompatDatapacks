@@ -29,4 +29,7 @@ The mod enables backward compatibility for datapacks.
    side="BOTH"
 
 [[mixins]]
-config = "compatdatapacks76-common.mixins.json"
+config = "compatdatapacks76-neoforge.mixins.json"
+
+[[mixins]]
+config = "compatdatapacks76-nfcommon.mixins.json"
