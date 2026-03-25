@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "compatdatapacks76",
+  "version": "${version}",
+
+  "name": "CompatDatapacks",
+  "description": "The mod enables backward compatibility for datapacks.",
+  "authors": [
+    "PitaQ"
+  ],
+  "contact": {
+    "homepage": "https://curseforge.com/minecraft/mc-mods/compatdatapacks76",
+    "sources": "https://github.com/Pitan76/CompatDatapacks",
+    "issues": "https://github.com/Pitan76/CompatDatapacks/issues"
+  },
+
+  "license": "MIT",
+  "icon": "icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.pitan76.compatdatapacks.fabric.CompatDatapacksFabric"
+    ]
+  },
+  "mixins": [
+    "compatdatapacks76-common.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": "*",
+    "minecraft": ">=1.21"
+  }
+}

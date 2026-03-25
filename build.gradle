@@ -12,6 +12,9 @@ base {
     archivesName = rootProject.archives_base_name
 }
 
+version = rootProject.mod_version + "-fabric"
+group = rootProject.maven_group
+
 repositories {
     maven { url "https://maven.pitan76.net/" }
     maven { url "https://maven.shedaniel.me/" }
@@ -67,11 +70,11 @@ if (name in rootProject.enabled_platforms.split(",")) {
 }
 
 processResources {
-    inputs.property "version", project.version
+    inputs.property "version", rootProject.version
     filteringCharset "UTF-8"
 
     filesMatching("fabric.mod.json") {
-        expand "version": project.version
+        expand "version": rootProject.version
     }
 }
 
