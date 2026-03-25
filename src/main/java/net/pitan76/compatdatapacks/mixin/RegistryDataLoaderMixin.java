@@ -29,21 +29,14 @@ public abstract class RegistryDataLoaderMixin {
         compatdatapacks76$KEY.set(key);
     }
 
-    @WrapOperation(
-            method = "loadFromResource",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/util/StrictJsonParser;parse(Ljava/io/Reader;)Lcom/google/gson/JsonElement;"
-            )
-    )
+    @WrapOperation(method = "loadFromResource", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/util/StrictJsonParser;parse(Ljava/io/Reader;)Lcom/google/gson/JsonElement;"))
     private static JsonElement compatdatapacks76$wrapParse(Reader reader, Operation<JsonElement> original) {
         JsonElement json = original.call(reader);
 
         ResourceKey<?> key = compatdatapacks76$KEY.get();
 
-        if (key != null
-                && "dimension_type".equals(key.identifier().getPath())
-                && Config.isUseCompatDimensionType()) {
+        if (key != null && "dimension_type".equals(key.identifier().getPath()) && Config.isUseCompatDimensionType()) {
             JsonFixer.fixDimensionType(json);
         }
 
