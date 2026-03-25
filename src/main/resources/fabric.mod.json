@@ -26,8 +26,9 @@
   "mixins": [
     "compatdatapacks76-common.mixins.json"
   ],
+  "accessWidener": "compatdatapacks76.accesswidener",
   "depends": {
     "fabricloader": "*",
-    "minecraft": ">=1.21"
+    "minecraft": ">=26"
   }
 }
