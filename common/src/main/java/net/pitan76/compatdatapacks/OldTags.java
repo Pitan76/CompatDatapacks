@@ -1,6 +1,6 @@
 package net.pitan76.compatdatapacks;
 
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
 
 import java.util.HashMap;
 import java.util.List;
@@ -56,6 +56,6 @@ public class OldTags {
     }
 
     public static Identifier replace(Identifier oldId) {
-        return Identifier.of(replace(oldId.toString()));
+        return Identifier.parse(replace(oldId.toString()));
     }
 }

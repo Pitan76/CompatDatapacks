@@ -4,7 +4,7 @@
   "package": "net.pitan76.compatdatapacks.neoforge.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "JsonDataLoaderMixin"
+    "SimpleJsonResourceReloadListenerMixin"
   ],
   "client": [
   ],

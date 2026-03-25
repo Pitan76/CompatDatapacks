@@ -1,7 +1,7 @@
 plugins {
     id "architectury-plugin" version "3.4-SNAPSHOT"
-    id "dev.architectury.loom" version "1.13-SNAPSHOT" apply false
-    id 'com.matthewprenger.cursegradle' version '1.+'
+    id "dev.architectury.loom" version "1.14-SNAPSHOT" apply false
+    id 'com.matthewprenger.cursegradle' version '1.5.0'
     id "com.modrinth.minotaur" version "2.+"
 }
 
@@ -20,10 +20,6 @@ subprojects {
 
     dependencies {
         minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
-        mappings loom.layered() {
-            it.mappings("net.fabricmc:yarn:${rootProject.yarn_mappings}:v2")
-            it.mappings file("../mappings/12111-fix.tiny")
-        }
     }
 
     if (name in rootProject.enabled_platforms.split(",")) {
