@@ -9,11 +9,11 @@ pluginManagement {
     }
 }
 
-include("common")
-var platforms = enabled_platforms.split(",")
-if (platforms.contains("fabric"))
-    include("fabric")
-if (platforms.contains("forge"))
-    include("forge")
-if (platforms.contains("neoforge"))
-    include("neoforge")
+//include("common")
+//var platforms = enabled_platforms.split(",")
+//if (platforms.contains("fabric"))
+//    include("fabric")
+//if (platforms.contains("forge"))
+//    include("forge")
+//if (platforms.contains("neoforge"))
+//    include("neoforge")
