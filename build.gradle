@@ -12,7 +12,7 @@ base {
     archivesName = rootProject.archives_base_name
 }
 
-version = rootProject.mod_version + "-fabric"
+version = rootProject.mod_version
 group = rootProject.maven_group
 
 repositories {
@@ -25,49 +25,38 @@ dependencies {
     implementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
 }
 
-if (name in rootProject.enabled_platforms.split(",")) {
-    var modLoader = name
+if (System.getenv("CURSEFORGE_TOKEN") != null) {
+    curseforge {
+        apiKey = System.getenv("CURSEFORGE_TOKEN")
+        project {
+            id = '1055171'
+            changelog = 'port to 1.26.1'
+            releaseType = 'release'
+            addGameVersion "Fabric"
+            addGameVersion '26.1'
 
-    if (System.getenv("CURSEFORGE_TOKEN") != null) {
-        curseforge {
-            apiKey = System.getenv("CURSEFORGE_TOKEN")
-            project {
-                id = '1055171'
-                changelog = ''
-                releaseType = 'release'
-                if (modLoader == "fabric") {
-                    addGameVersion "Fabric"
-                }
-                if (modLoader == "forge") {
-                    addGameVersion "Forge"
-                }
-                if (modLoader == "neoforge") {
-                    addGameVersion "NeoForge"
-                }
-                addGameVersion '26.1'
-
-                mainArtifact(tasks.jar)
-            }
-            options {
-                forgeGradleIntegration = false
-            }
+            mainArtifact(tasks.jar)
         }
-
+        options {
+            forgeGradleIntegration = false
+        }
     }
 
-    if (System.getenv("MODRINTH_TOKEN") != null) {
-        modrinth {
-            token = System.getenv("MODRINTH_TOKEN")
-            projectId = 'WcHRLVFE'
-            versionNumber = project.mod_version + "-" + modLoader
-            gameVersions = ['26.1']
-            versionType = 'release'
-            uploadFile = tasks.jar
-            changelog = ''
-            loaders = [modLoader]
-        }
+}
+
+if (System.getenv("MODRINTH_TOKEN") != null) {
+    modrinth {
+        token = System.getenv("MODRINTH_TOKEN")
+        projectId = 'WcHRLVFE'
+        versionNumber = rootProject.mod_version + "-" + "fabric"
+        gameVersions = ['26.1']
+        versionType = 'release'
+        uploadFile = tasks.jar
+        changelog = 'port to 1.26.1'
+        loaders = ["fabric"]
     }
 }
+
 
 processResources {
     inputs.property "version", rootProject.version
@@ -80,10 +69,6 @@ processResources {
 
 def targetJavaVersion = 25
 tasks.withType(JavaCompile).configureEach {
-    // ensure that the encoding is set to UTF-8, no matter what the system default is
-    // this fixes some edge cases with special characters not displaying correctly
-    // see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
-    // If Javadoc is generated, this must be specified in that task too.
     it.options.encoding = "UTF-8"
     it.options.release = targetJavaVersion
 
@@ -103,9 +88,6 @@ java {
         toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
     }
     base.archivesName = project.archives_base_name
-    // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-    // if it is present.
-    // If you remove this line, sources will not be generated.
     withSourcesJar()
 }
 
@@ -118,10 +100,10 @@ jar {
 // configure the maven publication
 publishing {
     publications {
-        mavenJava(MavenPublication) {
-            // add all the jars that should be included when publishing to maven
-            artifact(jar)
-            artifact(sourcesJar)
+        mavenFabric(MavenPublication) {
+            artifactId = rootProject.archives_base_name + "-" + "fabric"
+            version = project.version.toString().replace("-" + "fabric", "")
+            from components.java
         }
     }
 
