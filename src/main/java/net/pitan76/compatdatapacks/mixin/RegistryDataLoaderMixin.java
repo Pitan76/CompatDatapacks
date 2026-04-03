@@ -36,7 +36,7 @@ public abstract class RegistryDataLoaderMixin {
 
         ResourceKey<?> key = compatdatapacks76$KEY.get();
 
-        if (key != null && "dimension_type".equals(key.identifier().getNamespace()) && Config.isUseCompatDimensionType()) {
+        if (key != null && key.registry().getPath().equals("dimension_type") && Config.isUseCompatDimensionType()) {
             JsonFixer.fixDimensionType(json);
         }
 
