@@ -105,7 +105,7 @@ publishing {
     publications {
         mavenFabric(MavenPublication) {
             artifactId = rootProject.archives_base_name + "-" + "fabric"
-            version = project.version.toString().replace("-" + "fabric", "")
+            version = project.version.toString().replace("-" + "fabric", "") + "-SNAPSHOT"
             from components.java
         }
     }
