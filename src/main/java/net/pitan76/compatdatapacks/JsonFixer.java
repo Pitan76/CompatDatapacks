@@ -13,6 +13,23 @@ public class JsonFixer {
         if (!json.isJsonObject()) return;
         var obj = json.getAsJsonObject();
 
+        // effects -> default_clock
+        if (obj.has("effects") && obj.get("effects").isJsonPrimitive()) {
+            isFixed = true;
+            var effects = obj.getAsJsonPrimitive("effects");
+            if (effects.isString()) {
+                var effectsStr = effects.getAsString();
+                obj.addProperty("default_clock", effectsStr);
+                obj.remove("effects");
+            }
+        }
+
+        // if "has_ender_dragon_fight" does not exist, add "has_ender_dragon_fight" with default value false
+        if (!obj.has("has_ender_dragon_fight")) {
+            isFixed = true;
+            obj.addProperty("has_ender_dragon_fight", false);
+        }
+
         if (obj.has("monster_spawn_light_level") && obj.get("monster_spawn_light_level").isJsonObject()) {
             var monster_spawn_light_level = obj.getAsJsonObject("monster_spawn_light_level");
             if (monster_spawn_light_level.has("value") && monster_spawn_light_level.get("value").isJsonObject()) {
