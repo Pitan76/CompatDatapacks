@@ -25,7 +25,7 @@ import java.util.Map;
 public class TagLoaderMixin {
     @Shadow @Final private String directory;
 
-    @ModifyVariable(method = "load", at = @At("STORE"), ordinal = 0)
+    @ModifyVariable(method = "load", at = @At("STORE"), ordinal = 0, remap = false)
     private Iterator compatdatapacks76$modifyVar4(Iterator var4, ResourceManager resourceManager) {
         if (!Config.isUseCompatTagGroup()) return var4;
 

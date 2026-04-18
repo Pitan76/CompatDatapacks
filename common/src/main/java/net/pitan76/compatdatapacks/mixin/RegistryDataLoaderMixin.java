@@ -24,13 +24,13 @@ public abstract class RegistryDataLoaderMixin {
     @Unique
     private static final ThreadLocal<ResourceKey<?>> compatdatapacks76$KEY = new ThreadLocal<>();
 
-    @Inject(method = "loadFromResource", at = @At("HEAD"))
+    @Inject(method = "loadFromResource(Lcom/mojang/serialization/Decoder;Lnet/minecraft/resources/RegistryOps;Lnet/minecraft/resources/ResourceKey;Lnet/minecraft/server/packs/resources/Resource;)Lcom/mojang/datafixers/util/Either;", at = @At("HEAD"), remap = false)
     private static <T> void compatdatapacks76$captureKey(Decoder<T> decoder, RegistryOps<JsonElement> ops, ResourceKey<T> key, Resource resource, CallbackInfoReturnable<?> cir) {
         compatdatapacks76$KEY.set(key);
     }
 
-    @WrapOperation(method = "loadFromResource", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/util/StrictJsonParser;parse(Ljava/io/Reader;)Lcom/google/gson/JsonElement;"))
+    @WrapOperation(method = "loadFromResource(Lcom/mojang/serialization/Decoder;Lnet/minecraft/resources/RegistryOps;Lnet/minecraft/resources/ResourceKey;Lnet/minecraft/server/packs/resources/Resource;)Lcom/mojang/datafixers/util/Either;", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/util/StrictJsonParser;parse(Ljava/io/Reader;)Lcom/google/gson/JsonElement;"), remap = false)
     private static JsonElement compatdatapacks76$wrapParse(Reader reader, Operation<JsonElement> original) {
         JsonElement json = original.call(reader);
 

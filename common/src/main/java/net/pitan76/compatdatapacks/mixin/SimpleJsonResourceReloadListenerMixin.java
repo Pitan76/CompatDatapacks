@@ -34,7 +34,7 @@ public abstract class SimpleJsonResourceReloadListenerMixin {
     @Unique
     private static boolean compatdatapacks76$loading = false;
 
-    @Inject(method = "scanDirectory(Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/resources/FileToIdConverter;Lcom/mojang/serialization/DynamicOps;Lcom/mojang/serialization/Codec;Ljava/util/Map;)V", at = @At("TAIL"))
+    @Inject(method = "scanDirectory(Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/resources/FileToIdConverter;Lcom/mojang/serialization/DynamicOps;Lcom/mojang/serialization/Codec;Ljava/util/Map;)V", at = @At("TAIL"), remap = false)
     private static <T> void compatdatapacks76$load(ResourceManager manager, FileToIdConverter finder, DynamicOps<JsonElement> ops, Codec<T> codec, Map<Identifier, T> results, CallbackInfo ci) {
 
         if (!Config.isUseCompatDataType()) return;
@@ -81,7 +81,7 @@ public abstract class SimpleJsonResourceReloadListenerMixin {
     @Unique
     private static boolean compatdatapacks76$isLootTable = false;
 
-    @Inject(method = "scanDirectory(Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/resources/FileToIdConverter;Lcom/mojang/serialization/DynamicOps;Lcom/mojang/serialization/Codec;Ljava/util/Map;)V", at = @At("HEAD"))
+    @Inject(method = "scanDirectory(Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/resources/FileToIdConverter;Lcom/mojang/serialization/DynamicOps;Lcom/mojang/serialization/Codec;Ljava/util/Map;)V", at = @At("HEAD"), remap = false)
     private static <T> void compatdatapacks76$load_head(ResourceManager manager, FileToIdConverter finder, DynamicOps<JsonElement> ops, Codec<T> codec, Map<Identifier, T> results, CallbackInfo ci) {
         if (Config.isUseCompatRecipe() || Config.isUseCompatLootTable()) {
             var dataType = "";
