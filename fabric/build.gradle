@@ -1,5 +1,5 @@
 plugins {
-    id "com.github.johnrengelman.shadow" version "7.1.2"
+    id "com.gradleup.shadow" version "9.4.0"
 }
 
 architectury {
@@ -13,12 +13,21 @@ configurations {
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
     developmentFabric.extendsFrom common
+
+    apiElements {
+        outgoing.artifacts.clear()
+        outgoing.artifact(shadowJar)
+    }
+    runtimeElements {
+        outgoing.artifacts.clear()
+        outgoing.artifact(shadowJar)
+    }
 }
 
 dependencies {
-    modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
+    implementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
 
-    common(project(path: ":common", configuration: "namedElements")) { transitive false }
+    common(project(path: ":common")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
 }
 
@@ -33,15 +42,12 @@ processResources {
 }
 
 shadowJar {
-    configurations = [project.configurations.shadowCommon]
-    archiveClassifier = "dev-shadow"
-}
+    dependsOn(jar)
+    mainSpec.sourcePaths.clear()
+    from(zipTree(jar.archiveFile))
 
-remapJar {
-    injectAccessWidener = true
-    inputFile.set(shadowJar.archiveFile)
-    dependsOn shadowJar
-    archiveClassifier = null
+    configurations = [project.configurations.shadowCommon]
+    archiveClassifier.set(null)
 }
 
 jar {

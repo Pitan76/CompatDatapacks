@@ -1,5 +1,5 @@
 plugins {
-    id "com.github.johnrengelman.shadow" version "7.1.2"
+    id "com.gradleup.shadow" version "9.4.0"
 }
 loom {
     forge {
@@ -17,12 +17,21 @@ configurations {
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
     developmentForge.extendsFrom common
+
+    apiElements {
+        outgoing.artifacts.clear()
+        outgoing.artifact(shadowJar)
+    }
+    runtimeElements {
+        outgoing.artifacts.clear()
+        outgoing.artifact(shadowJar)
+    }
 }
 
 dependencies {
     forge "net.minecraftforge:forge:${rootProject.forge_version}"
 
-    common(project(path: ":common", configuration: "namedElements")) { transitive false }
+    common(project(path: ":common")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 }
 
@@ -39,13 +48,11 @@ processResources {
 shadowJar {
     exclude "fabric.mod.json"
 
-    configurations = [project.configurations.shadowCommon]
-    archiveClassifier = "dev-shadow"
-}
+    dependsOn(jar)
+    mainSpec.sourcePaths.clear()
+    from(zipTree(jar.archiveFile))
 
-remapJar {
-    inputFile.set(shadowJar.archiveFile)
-    dependsOn shadowJar
+    configurations = [project.configurations.shadowCommon]
     archiveClassifier.set(null)
 }
 

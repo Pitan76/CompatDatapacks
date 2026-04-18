@@ -1,7 +1,7 @@
 plugins {
-    id "architectury-plugin" version "3.4-SNAPSHOT"
-    id "dev.architectury.loom" version "1.14-SNAPSHOT" apply false
-    id 'com.matthewprenger.cursegradle' version '1.5.0'
+    id "architectury-plugin" version "3.5-SNAPSHOT"
+    id "dev.architectury.loom-no-remap" version "1.14-SNAPSHOT" apply false
+    id 'com.matthewprenger.cursegradle' version '1.5.0-SNAPSHOT' // FORK: maven.pitan76.net
     id "com.modrinth.minotaur" version "2.+"
 }
 
@@ -10,13 +10,9 @@ architectury {
 }
 
 subprojects {
-    apply plugin: "dev.architectury.loom"
+    apply plugin: "dev.architectury.loom-no-remap"
     apply plugin: "com.modrinth.minotaur"
     apply plugin: "com.matthewprenger.cursegradle"
-
-    loom {
-        silentMojangMappingsLicense()
-    }
 
     dependencies {
         minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
@@ -41,9 +37,11 @@ subprojects {
                     if (modLoader == "neoforge") {
                         addGameVersion "NeoForge"
                     }
-                    addGameVersion '1.21.11'
+                    addGameVersion '26.1'
+                    addGameVersion '26.1.1'
+                    addGameVersion '26.1.2'
 
-                    mainArtifact(tasks.remapJar)
+                    mainArtifact(tasks.jar)
                 }
                 options {
                     forgeGradleIntegration = false
@@ -57,9 +55,9 @@ subprojects {
                 token = System.getenv("MODRINTH_TOKEN")
                 projectId = 'WcHRLVFE'
                 versionNumber = project.mod_version + "-" + modLoader
-                gameVersions = ['1.21.11']
+                gameVersions = ['26.1', '26.1.1', '26.1.2']
                 versionType = 'release'
-                uploadFile = tasks.remapJar
+                uploadFile = tasks.jar
                 changelog = ''
                 loaders = [modLoader]
             }
@@ -74,7 +72,7 @@ allprojects {
     apply plugin: "architectury-plugin"
     apply plugin: "maven-publish"
 
-    archivesBaseName = rootProject.archives_base_name
+    base.archivesName = rootProject.archives_base_name
     version = rootProject.mod_version
     group = rootProject.maven_group
 
@@ -89,7 +87,7 @@ allprojects {
 
     tasks.withType(JavaCompile).configureEach {
         options.encoding = "UTF-8"
-        options.release.set(21)
+        options.release.set(25)
     }
 
     java {
