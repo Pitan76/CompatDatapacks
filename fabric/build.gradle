@@ -70,7 +70,7 @@ publishing {
     publications {
         mavenFabric(MavenPublication) {
             artifactId = rootProject.archives_base_name + "-" + project.name
-            version = project.version.toString().replace("-" + project.name, "")
+            version = project.version.toString().replace("-" + project.name, "") + "-SNAPSHOT"
             from components.java
         }
     }

@@ -14,6 +14,7 @@ publishing {
     publications {
         mavenCommon(MavenPublication) {
             artifactId = rootProject.archives_base_name
+            version = project.version.toString() + "-SNAPSHOT"
             from components.java
         }
     }
