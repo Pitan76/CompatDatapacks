@@ -23,6 +23,7 @@
       "net.pitan76.compatdatapacks.fabric.CompatDatapacksFabric"
     ]
   },
+  "accessWidener": "compatdatapacks76.accesswidener",
   "mixins": [
     "compatdatapacks76-common.mixins.json"
   ],

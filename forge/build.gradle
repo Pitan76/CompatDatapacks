@@ -5,6 +5,7 @@ loom {
     forge {
         mixinConfig "compatdatapacks76-common.mixins.json"
     }
+    accessWidenerPath = project(":common").loom.accessWidenerPath
 }
 architectury {
     platformSetupLoomIde()
