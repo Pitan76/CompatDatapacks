@@ -26,6 +26,7 @@ public class Config {
             map.put("useCompatDataType", true);
             map.put("useCompatDimensionType", true);
             map.put("useCompatTagGroup", true);
+            map.put("oldTagsOptional", true);
 
             save();
         }
@@ -59,6 +60,15 @@ public class Config {
     public static boolean isUseCompatTagGroup() {
         if (!isEnabled()) return false;
         return getBoolean("useCompatTagGroup");
+    }
+
+    /**
+     * 旧形式のタグから取り込んだエントリを optional 扱いにするか。
+     * <p>
+     * 無効にすると、旧タグ内に存在しないIDが書かれていた場合にタグ全体のロードが失敗する。
+     */
+    public static boolean isOldTagsOptional() {
+        return getBoolean("oldTagsOptional");
     }
 
 
