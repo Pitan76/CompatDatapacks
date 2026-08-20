@@ -7,6 +7,7 @@ import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import net.pitan76.compatdatapacks.CompatDatapacks;
 import net.pitan76.compatdatapacks.OldTags;
+import net.pitan76.compatdatapacks.OptionalTagRewriter;
 import net.pitan76.compatdatapacks.RewriteLogs;
 import net.pitan76.compatdatapacks.config.Config;
 import net.pitan76.compatdatapacks.config.IgnoreConfig;
@@ -46,7 +47,11 @@ public class TagGroupLoaderMixin {
                 var replaced = OldTags.replace(entry.getKey());
                 if (IgnoreConfig.contains(replaced.toString())) continue;
 
-                entries.add(Map.entry(replaced, entry.getValue()));
+                var resources = Config.isOldTagsOptional()
+                        ? OptionalTagRewriter.makeOptional(entry.getValue())
+                        : entry.getValue();
+
+                entries.add(Map.entry(replaced, resources));
             }
 
             ++RewriteLogs.loadingOldTags;
